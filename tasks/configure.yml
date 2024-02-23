@@ -1,0 +1,51 @@
+# tasks file for debian-12-mariadb-server
+---
+- name: configure | set root password
+  ansible.builtin.command: >
+    mysql \
+      --database=mysql \
+      -e "UPDATE `user` SET `password` = PASSWORD('{{ debian_12_mariadb_server_root_password }}') WHERE `user` = 'root'; SELECT ROW_COUNT();" \
+      --skip-column-names
+  register: rows_affected
+  changed_when: "rows_affected.stdout != '0'"
+
+- name: configure | set root password | flush privileges
+  ansible.builtin.command: mysql --database=mysql -e "FLUSH PRIVILEGES;"
+  when: "rows_affected.stdout != '0'"  # noqa no-changed-when
+
+- name: configure | create certificate directory
+  ansible.builtin.file:
+    path: /etc/mysql/ssl
+    state: directory
+    mode: '700'
+  when: "debian_12_mariadb_server_certificates_present | length > 0"
+
+- name: configure | delete certificate files
+  ansible.builtin.file:
+    path: "/etc/mysql/ssl/{{ item }}.pem"
+    state: absent
+  with_items: "{{ debian_12_mariadb_server_certificates_absent }}"
+  notify: restart mariadb-server
+
+- name: configure | copy certificate files
+  ansible.builtin.copy:
+    src: "{{ item.value }}"
+    dest: "/etc/mysql/ssl/{{ item.key }}.pem"
+    mode: '600'
+  with_dict: "{{ debian_12_mariadb_server_certificates_present }}"
+  notify: restart mariadb-server
+
+- name: configure | delete (additional) configuration files
+  ansible.builtin.file:
+    path: "/etc/mysql/mariadb.conf.d/{{ item }}.cnf"
+    state: absent
+  with_items: "{{ debian_12_mariadb_server_configuration_files_absent }}"
+  notify: restart mariadb-server
+
+- name: configure | copy (additional) configuration files
+  ansible.builtin.template:
+    src: "{{ item.value }}"
+    dest: "/etc/mysql/mariadb.conf.d/{{ item.key }}.cnf"
+    mode: '644'
+  with_dict: "{{ debian_12_mariadb_server_configuration_files_present }}"
+  notify: restart mariadb-server

@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+[mysqld]
+
+innodb_buffer_pool_instances = {{ debian_12_mariadb_server_configuration_mysqld_innodb_buffer_pool_instances | default(8) }}
+
+innodb_buffer_pool_size = {{ debian_12_mariadb_server_configuration_mysqld_innodb_buffer_pool_size | default(134217728) }}
+
+innodb_flush_log_at_trx_commit = {{ debian_12_mariadb_server_configuration_mysqld_innodb_flush_log_at_trx_commit | default(1) }}
+
+innodb_io_capacity = {{ debian_12_mariadb_server_configuration_mysqld_innodb_io_capacity | default(200) }}
+innodb_io_capacity_max = {{ debian_12_mariadb_server_configuration_mysqld_innodb_io_capacity_max | default(2000) }}

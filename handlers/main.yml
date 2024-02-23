@@ -1,0 +1,6 @@
+# handlers file for debian-12-mariadb-server
+---
+- name: restart mariadb-server
+  ansible.builtin.service:
+    name: mysql
+    state: restarted
