@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+
+[mysqld]
+
+group_concat_max_len = {{ debian_12_mariadb_server_configuration_mysqld_group_concat_max_len | default(1024) }}
+
+lc_time_names = {{ debian_12_mariadb_server_configuration_mysqld_lc_time_names | default('en_US') }}
+
+net_read_timeout = {{ debian_12_mariadb_server_configuration_mysqld_net_read_timeout | default(30) }}
+
+max_connections = {{ debian_12_mariadb_server_configuration_mysqld_max_connections | default(151) }}
+
+max_heap_table_size = {{ debian_12_mariadb_server_configuration_mysqld_max_heap_table_size | default(16777216) }}
+
+max_statement_time = {{ debian_12_mariadb_server_configuration_mysqld_max_statement_time | default(0) }}
+
+skip_name_resolve = {{ debian_12_mariadb_server_configuration_mysqld_skip_name_resolve | default(1) }}
+
+tmp_table_size = {{ debian_12_mariadb_server_configuration_mysqld_tmp_table_size | default(16777216) }}
+
+query_cache_type = {{ debian_12_mariadb_server_configuration_mysqld_query_cache_type | default(1) }}
+
+slow_query_log = {{ debian_12_mariadb_server_configuration_mysqld_slow_query_log | default(0) }}
+slow_query_log_file = {{ debian_12_mariadb_server_configuration_mysqld_slow_query_log_file | default("{{ inventory_hostname_short }}-slow.log") }}
+long_query_time = {{ debian_12_mariadb_server_configuration_mysqld_long_query_time | default(10) }}
+
+innodb_log_file_size = {{ debian_12_mariadb_server_configuration_mysqld_innodb_log_file_size }}

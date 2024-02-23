@@ -1,0 +1,9 @@
+# defaults file for debian-12-mariadb-server
+---
+debian_12_mariadb_server_certificates_present: {}
+
+debian_12_mariadb_server_certificates_absent: []
+
+debian_12_mariadb_server_configuration_files_present: {}
+
+debian_12_mariadb_server_configuration_files_absent: []

@@ -1,0 +1,10 @@
+# tasks file for debian-12-mariadb-server
+---
+- name: install | dependencies
+  ansible.builtin.apt:
+    name: "{{ debian_12_mariadb_server_dependencies }}"
+
+- name: install | dependencies | check service
+  ansible.builtin.service:
+    name: mysql
+    state: started
